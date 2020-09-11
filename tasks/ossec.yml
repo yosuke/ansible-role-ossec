@@ -24,6 +24,22 @@
     - git
   when: ansible_os_family == "Debian"
 
+- name: Install base packages
+  apt: name={{ item }} state=installed
+  with_items:
+    - build-essential
+    - php
+    - php-cli
+    - php-common
+    - libapache2-mod-php
+    - apache2-utils
+    - libz-dev
+    - libssl-dev
+    - libpcre2-dev
+    - libevent-dev
+  tags:
+    - packages
+
 - name: (OSSEC) Install prerequisites for Red Hat OS family
   package:
     name: "{{ item }}"
@@ -101,10 +117,3 @@
   service:
     name: ossec
     state: started
-
-- name: (OSSEC) Whitelist Ansible Controller IP address
-  lineinfile:
-    path: /var/ossec/etc/ossec.conf
-    insertafter: '</white_list>'
-    state: present
-    line: "    <white_list>{{ ansible_controller_ip }}</white_list>"
