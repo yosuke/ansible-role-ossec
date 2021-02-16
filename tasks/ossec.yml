@@ -22,23 +22,11 @@
     - "{{ dev_tools }}"
     - "{{ pexpect }}"
     - git
-  when: ansible_os_family == "Debian"
-
-- name: Install base packages
-  apt: name={{ item }} state=installed
-  with_items:
-    - build-essential
-    - php
-    - php-cli
-    - php-common
-    - libapache2-mod-php
-    - apache2-utils
     - libz-dev
     - libssl-dev
     - libpcre2-dev
     - libevent-dev
-  tags:
-    - packages
+  when: ansible_os_family == "Debian"
 
 - name: (OSSEC) Install prerequisites for Red Hat OS family
   package:
@@ -117,3 +105,10 @@
   service:
     name: ossec
     state: started
+
+- name: (OSSEC) Enable JSON log
+  lineinfile:
+    path: /var/ossec/etc/ossec.conf
+    insertafter: '<global>'
+    state: present
+    line: "    <jsonout_output>yes</jsonout_output>"
