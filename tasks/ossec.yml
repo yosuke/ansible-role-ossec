@@ -112,3 +112,15 @@
     insertafter: '<global>'
     state: present
     line: "    <jsonout_output>yes</jsonout_output>"
+
+- name: (OSSEC) Install custom local_rules.xml
+  template:
+    src: "{{ playbook_dir }}/{{ local_rules_template }}"
+    dest: /var/ossec/rules/local_rules.xml
+    owner: root
+    group: root
+    mode: 0644
+  when:
+    - local_rules_template is defined
+  notify:
+    - restart ossec
