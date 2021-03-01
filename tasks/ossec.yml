@@ -26,6 +26,7 @@
     - libssl-dev
     - libpcre2-dev
     - libevent-dev
+    - libsystemd-dev
   when: ansible_os_family == "Debian"
 
 - name: (OSSEC) Install prerequisites for Red Hat OS family
